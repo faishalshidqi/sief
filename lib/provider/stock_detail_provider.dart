@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:nanoid2/nanoid2.dart';
 
 class StockDetailProvider extends ChangeNotifier {
@@ -12,15 +13,21 @@ class StockDetailProvider extends ChangeNotifier {
   final _firestore = FirebaseFirestore.instance;
   StockDetailProvider();
 
+  int outingStockAmount = 0;
   bool isEditMode = false;
   String? name;
   int? amount;
-  double? price;
+  int? price;
   String? supplier;
-  String? imageUrl;
+  String imageUrl = '';
   String? docId;
   XFile? file;
   ImagePicker imagePicker = ImagePicker();
+
+  updateOutingStockAmount(int value) {
+    outingStockAmount = value;
+    notifyListeners();
+  }
 
   void updateEditMode(bool value) {
     isEditMode = value;
@@ -37,12 +44,12 @@ class StockDetailProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updatePrice(double value) {
+  void updatePrice(int value) {
     price = value;
     notifyListeners();
   }
 
-  void updateSupplier(String value) {
+  void updateSupplier(String? value) {
     supplier = value;
     notifyListeners();
   }
@@ -52,7 +59,7 @@ class StockDetailProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateImage(XFile value) {
+  void updateImage(XFile? value) {
     file = value;
     notifyListeners();
   }
@@ -65,6 +72,8 @@ class StockDetailProvider extends ChangeNotifier {
   void updateStockRecord() async {
     try {
       CollectionReference stocksCollection = _firestore.collection('stocks');
+      CollectionReference reportsCollection = _firestore.collection('reports');
+
       Timestamp timestamp = Timestamp.fromDate(DateTime.now());
 
       String url = await uploadImage(
@@ -80,18 +89,28 @@ class StockDetailProvider extends ChangeNotifier {
         'price': price,
         'added_at': timestamp,
       });
+
+      await reportsCollection.doc(DateFormat('MMMM yyyy').format(timestamp.toDate())).set({
+        'docId': docId,
+        'type': 'STOCK-UPDATED',
+        'name': name,
+        'amount': amount,
+        'price': price,
+        'added_at': timestamp,
+      });
     } catch (error) {
       rethrow;
     } finally {
       name = null;
       amount = null;
       supplier = null;
-      imageUrl = null;
+      file = null;
+      imageUrl = '';
     }
   }
 
   Future<String> uploadImage({required String id}) async {
-    if (file == null) return imageUrl!;
+    if (file == null) return imageUrl;
 
     String uniqueFilename = nanoid();
     try {
@@ -107,23 +126,22 @@ class StockDetailProvider extends ChangeNotifier {
   }
 
   Widget imagePreview() {
-    if (imageUrl != null) {
+    if (imageUrl != '') {
       return CachedNetworkImage(
-        imageUrl: imageUrl!,
+        imageUrl: imageUrl,
         width: 180,
         height: 180,
       );
     }
-    if (file == null) {
-      return Image.asset(
-        'assets/istock-default.jpg',
-        width: 180,
-        height: 180,
-      );
-    }
-    else {
+    else if (file != null) {
       return Image.file(
         File(file!.path),
+        width: 180,
+        height: 180,
+      );
+    } else {
+      return Image.asset(
+        'assets/istock-default.jpg',
         width: 180,
         height: 180,
       );

@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:sief_firebase/common/navigation.dart';
 import 'package:sief_firebase/common/styles.dart';
 import 'package:sief_firebase/common/validators.dart';
 import 'package:sief_firebase/components/custom_appbar.dart';
@@ -13,6 +16,7 @@ class StockFormPage extends StatelessWidget {
   static const routeName = '/stock_form';
   static final _formKey = GlobalKey<FormState>();
   static final _firestore = FirebaseFirestore.instance;
+  static final _auth = FirebaseAuth.instance;
   const StockFormPage({super.key});
 
   @override
@@ -80,7 +84,7 @@ class StockFormPage extends StatelessWidget {
                                     content:
                                         'Ikon kamera untuk mengambil gambar dari kamera.\nIkon gambar untuk mengambil dari galeri',
                                     actions: [
-                                      TextButton(
+                                      IconButton(
                                         onPressed: () async {
                                           try {
                                             XFile? upload = await state
@@ -90,7 +94,7 @@ class StockFormPage extends StatelessWidget {
                                             );
                                             state.updateImage(upload);
                                             if (!context.mounted) return;
-                                            Navigator.of(context).pop();
+                                            Navigation.back();
                                           } catch (error) {
                                             customInfoDialog(
                                               context: context,
@@ -99,9 +103,10 @@ class StockFormPage extends StatelessWidget {
                                             );
                                           }
                                         },
-                                        child: const Icon(Icons.camera_alt),
+                                        icon: const Icon(Icons.camera_alt),
+                                        color: primaryColor,
                                       ),
-                                      TextButton(
+                                      IconButton(
                                         onPressed: () async {
                                           try {
                                             XFile? upload = await state
@@ -111,7 +116,7 @@ class StockFormPage extends StatelessWidget {
                                             );
                                             state.updateImage(upload);
                                             if (!context.mounted) return;
-                                            Navigator.of(context).pop();
+                                            Navigation.back();
                                           } catch (error) {
                                             customInfoDialog(
                                               context: context,
@@ -120,7 +125,8 @@ class StockFormPage extends StatelessWidget {
                                             );
                                           }
                                         },
-                                        child: const Icon(Icons.photo_library),
+                                        icon: const Icon(Icons.photo_library),
+                                        color: primaryColor,
                                       ),
                                     ],
                                   );
@@ -129,9 +135,9 @@ class StockFormPage extends StatelessWidget {
                             ),
                           ),
                           InputLayout(
-                            'Jumlah',
+                            'Jumlah Stok',
                             TextFormField(
-                              decoration: customInputDecoration('Jumlah Stok'),
+                              decoration: customInputDecoration('Jumlah'),
                               onChanged: (String value) {
                                 state.updateAmount(int.parse(value));
                               },
@@ -140,12 +146,11 @@ class StockFormPage extends StatelessWidget {
                             ),
                           ),
                           InputLayout(
-                            'Harga',
+                            'Harga Furnitur',
                             TextFormField(
-                              decoration:
-                                  customInputDecoration('Harga Furnitur'),
+                              decoration: customInputDecoration('Harga'),
                               onChanged: (String value) {
-                                state.updatePrice(double.parse(value));
+                                state.updatePrice(int.parse(value));
                               },
                               keyboardType: TextInputType.number,
                               validator: notEmptyValidator,
@@ -169,8 +174,11 @@ class StockFormPage extends StatelessWidget {
                                   ),
                                   items: snapshot.data!.docs.map((document) {
                                     final String name = document.data()['name'];
+                                    final String docId =
+                                        document.data()['docId'];
+
                                     return DropdownMenuItem(
-                                      value: name,
+                                      value: '$name,$docId',
                                       child: Text(name),
                                     );
                                   }).toList(),
@@ -193,20 +201,64 @@ class StockFormPage extends StatelessWidget {
                                     Theme.of(context).textTheme.headlineSmall,
                               ),
                               onPressed: () async {
-                                try {
-                                  state.addStockRecord();
-                                  if (!context.mounted) return;
-                                  customInfoDialog(
-                                    context: context,
-                                    title: 'Berhasil!',
-                                    content: 'Data Stok Berhasil Ditambahkan',
-                                  );
-                                } catch (error) {
-                                  customInfoDialog(
-                                    context: context,
-                                    title: 'Error!',
-                                    content: error.toString(),
-                                  );
+                                if (_formKey.currentState!.validate()) {
+                                  try {
+                                    CollectionReference stocksCollection =
+                                        _firestore.collection('stocks');
+                                    CollectionReference reportsCollection =
+                                        _firestore.collection('reports');
+                                    Timestamp timestamp =
+                                        Timestamp.fromDate(DateTime.now());
+
+                                    final id = _firestore
+                                        .collection('stocks')
+                                        .doc()
+                                        .id;
+                                    String url =
+                                        await state.uploadImage(id: id);
+                                    state.updateImageUrl(url);
+
+                                    await stocksCollection.doc(id).set({
+                                      'uid': _auth.currentUser!.uid,
+                                      'docId': id,
+                                      'name': state.name,
+                                      'amount': state.amount,
+                                      'price': state.price,
+                                      'supplier': state.supplier,
+                                      'imageUrl': state.imageUrl,
+                                      'added_at': timestamp,
+                                      'updated_at': timestamp,
+                                    }).catchError((error) {
+                                      customInfoDialog(
+                                        context: context,
+                                        title: 'Error!',
+                                        content: error.toString(),
+                                      );
+                                    });
+
+                                    await reportsCollection.doc(DateFormat('MMMM yyyy').format(timestamp.toDate())).collection(id).doc().set({
+                                      'docId': id,
+                                      'type': 'STOCK-ADDED',
+                                      'name': state.name,
+                                      'amount': state.amount,
+                                      'price': state.price,
+                                      'added_at': timestamp,
+                                    });
+                                    if (!context.mounted) return;
+                                    customInfoDialog(
+                                      context: context,
+                                      title: 'Berhasil!',
+                                      content: 'Data Stok Berhasil Ditambahkan',
+                                    );
+                                  } catch (error) {
+                                    customInfoDialog(
+                                      context: context,
+                                      title: 'Error!',
+                                      content: error.toString(),
+                                    );
+                                  } finally {
+                                    state.file = null;
+                                  }
                                 }
                               },
                             ),

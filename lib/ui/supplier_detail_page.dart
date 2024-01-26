@@ -7,13 +7,14 @@ import 'package:sief_firebase/common/validators.dart';
 import 'package:sief_firebase/components/custom_appbar.dart';
 import 'package:sief_firebase/components/custom_coming_soon_dialog.dart';
 import 'package:sief_firebase/components/input_layout.dart';
+import 'package:sief_firebase/data/model/supplier.dart';
 import 'package:sief_firebase/provider/supplier_detail_provider.dart';
 
 class SupplierDetailPage extends StatelessWidget {
   static const routeName = '/supplier_detail';
   static final _firestore = FirebaseFirestore.instance;
   static final _formKey = GlobalKey<FormState>();
-  final Map<String, dynamic> supplier;
+  final Supplier supplier;
   const SupplierDetailPage({super.key, required this.supplier});
 
   @override
@@ -24,7 +25,7 @@ class SupplierDetailPage extends StatelessWidget {
         child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
           stream: _firestore
               .collection('suppliers')
-              .where('docId', isEqualTo: supplier['docId'])
+              .where('docId', isEqualTo: supplier.docId)
               .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
@@ -58,6 +59,9 @@ class SupplierDetailPage extends StatelessWidget {
                               activeColor: primaryColor,
                               onChanged: (bool value) async {
                                 state.updateEditMode(value);
+                                state.updateName(data['name']);
+                                state.updatePhone(data['phone']);
+                                state.updateAddress(data['address']);
                               },
                             ),
                           ],
@@ -73,45 +77,47 @@ class SupplierDetailPage extends StatelessWidget {
                                   child: Column(
                                     children: [
                                       InputLayout(
-                                        'Nama',
+                                        'Nama Supplier',
                                         TextFormField(
                                           decoration: customInputDecoration(
-                                            data['name'],
+                                            'Nama',
                                           ),
                                           onChanged: (String value) {
                                             state.updateName(value);
                                           },
                                           keyboardType: TextInputType.name,
                                           validator: notEmptyValidator,
+                                          initialValue: data['name'],
                                           autofocus: true,
                                         ),
                                       ),
                                       InputLayout(
-                                        'Nomor Telepon',
+                                        'Nomor Telepon Supplier',
                                         TextFormField(
                                           decoration: customInputDecoration(
-                                            data['phone'],
+                                            'Nomor Telepon',
                                           ),
                                           onChanged: (String value) {
                                             state.updatePhone(value);
                                           },
                                           keyboardType: TextInputType.phone,
                                           validator: notEmptyValidator,
+                                          initialValue: data['phone'],
                                           autofocus: true,
                                         ),
                                       ),
                                       InputLayout(
-                                        'Alamat',
+                                        'Alamat Supplier',
                                         TextFormField(
                                           decoration: customInputDecoration(
-                                            data['address'],
+                                            'Alamat',
                                           ),
                                           onChanged: (String value) {
                                             state.updateAddress(value);
                                           },
-                                          keyboardType:
-                                              TextInputType.multiline,
+                                          keyboardType: TextInputType.multiline,
                                           validator: notEmptyValidator,
+                                          initialValue: data['address'],
                                           autofocus: true,
                                         ),
                                       ),
@@ -149,6 +155,7 @@ class SupplierDetailPage extends StatelessWidget {
                                                   'address': state.address,
                                                   'updated_at': timestamp,
                                                 });
+                                                state.updateEditMode(false);
                                                 if (!context.mounted) return;
                                                 customInfoDialog(
                                                   context: context,
@@ -162,18 +169,23 @@ class SupplierDetailPage extends StatelessWidget {
                                                   title: 'Error!',
                                                   content: error.toString(),
                                                 );
-                                              }
-                                              finally {
+                                              } finally {
                                                 state.name = null;
                                                 state.phone = null;
                                                 state.address = null;
+                                                state.isEditMode = false;
                                               }
                                             }
                                           },
                                         ),
                                       ),
                                       const SizedBox(height: 20),
-                                      Text('Untuk data yang tidak berubah, silakan datanya ditulis kembali agar dapat tersimpan', style: Theme.of(context).textTheme.bodySmall),
+                                      Text(
+                                          'Untuk data yang tidak berubah, silakan datanya ditulis kembali agar dapat tersimpan',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -254,7 +266,7 @@ class SupplierDetailPage extends StatelessWidget {
                                       TableRow(
                                         children: [
                                           Text(
-                                            'Disunting Pada\n',
+                                            'Diperbarui Pada\n',
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .titleLarge,

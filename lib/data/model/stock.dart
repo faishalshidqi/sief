@@ -2,7 +2,7 @@ class Stock {
   final String name;
   final int amount;
   final String docId;
-  final double price;
+  final int price;
   final String imageUrl;
   final String supplier;
   final String uid;

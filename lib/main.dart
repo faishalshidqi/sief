@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sief_firebase/common/navigation.dart';
 import 'package:sief_firebase/common/styles.dart';
+import 'package:sief_firebase/data/model/stock.dart';
+import 'package:sief_firebase/data/model/supplier.dart';
 import 'package:sief_firebase/firebase_options.dart';
 import 'package:sief_firebase/provider/homepage_provider.dart';
 import 'package:sief_firebase/provider/login_provider.dart';
@@ -88,13 +90,13 @@ class MyApp extends StatelessWidget {
           SupplierFormPage.routeName: (context) => const SupplierFormPage(),
           SupplierDetailPage.routeName: (context) => SupplierDetailPage(
                 supplier: ModalRoute.of(context)?.settings.arguments
-                    as Map<String, dynamic>,
+                    as Supplier,
               ),
           StocksListPage.routeName: (context) => const StocksListPage(),
           StockFormPage.routeName: (context) => const StockFormPage(),
           StockDetailPage.routeName: (context) => StockDetailPage(
                 stock: ModalRoute.of(context)?.settings.arguments
-                    as Map<String, dynamic>,
+                    as Stock,
               ),
           UsersListPage.routeName: (context) => const UsersListPage(),
           UserFormPage.routeName: (context) => const UserFormPage(),

@@ -13,17 +13,28 @@ class StocksProvider extends ChangeNotifier {
   final _firestore = FirebaseFirestore.instance;
   final _storage = FirebaseStorage.instance;
   final _auth = FirebaseAuth.instance;
+
+  bool isGridView = true;
+  int outingStockAmount = 0;
   ImagePicker imagePicker = ImagePicker();
   XFile? file;
   String? name;
   int? amount;
   String? supplier;
   String? imageUrl;
-  double? price;
+  int? price;
 
+  updateOutingStockAmount(int value) {
+    outingStockAmount = value;
+    notifyListeners();
+  }
+
+  updateIsGridView(bool value) {
+    isGridView = value;
+    notifyListeners();
+  }
 
   void addStockRecord() async {
-    try {
       CollectionReference stocksCollection = _firestore.collection('stocks');
       Timestamp timestamp = Timestamp.fromDate(DateTime.now());
 
@@ -41,16 +52,8 @@ class StocksProvider extends ChangeNotifier {
         'price': price,
         'added_at': timestamp,
         'updated_at': timestamp,
-      }).catchError((error) {
-        throw error;
       });
-    }
-    catch (error) {
-      rethrow;
-    }
-    finally {
       file = null;
-    }
   }
 
   Future<String> uploadImage({required String id}) async {
@@ -111,7 +114,7 @@ class StocksProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updatePrice(double value) {
+  void updatePrice(int value) {
     price = value;
     notifyListeners();
   }

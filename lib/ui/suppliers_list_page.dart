@@ -67,16 +67,15 @@ class SuppliersListPage extends StatelessWidget {
                     contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                     title: Text(
                       name,
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
                     subtitle: Text(
                       phone,
-                      style: Theme.of(context).textTheme.titleSmall,
                     ),
                     onTap: () {
                       Navigation.intentWithData(
                         routeName: SupplierDetailPage.routeName,
-                        arguments: data,
+                        arguments: supplier,
                       );
                     },
                   ),

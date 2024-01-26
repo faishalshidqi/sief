@@ -34,10 +34,9 @@ class SupplierFormPage extends StatelessWidget {
                       child: Column(
                         children: [
                           InputLayout(
-                            'Nama',
+                            'Nama Supplier',
                             TextFormField(
-                              decoration:
-                                  customInputDecoration('Nama Supplier'),
+                              decoration: customInputDecoration('Nama'),
                               onChanged: (String value) {
                                 state.updateName(value);
                               },
@@ -46,10 +45,10 @@ class SupplierFormPage extends StatelessWidget {
                             ),
                           ),
                           InputLayout(
-                            'Nomor Telepon',
+                            'Nomor Telepon Supplier',
                             TextFormField(
                               decoration: customInputDecoration(
-                                'Nomor Telepon Supplier',
+                                'Nomor Telepon',
                               ),
                               onChanged: (String value) {
                                 state.updatePhone(value);
@@ -59,10 +58,9 @@ class SupplierFormPage extends StatelessWidget {
                             ),
                           ),
                           InputLayout(
-                            'Alamat',
+                            'Alamat Supplier',
                             TextFormField(
-                              decoration:
-                                  customInputDecoration('Alamat Supplier'),
+                              decoration: customInputDecoration('Alamat'),
                               onChanged: (String value) {
                                 state.updateAddress(value);
                               },
@@ -115,6 +113,7 @@ class SupplierFormPage extends StatelessWidget {
                                     );
                                   }
                                 }
+                                _formKey.currentState!.reset();
                               },
                             ),
                           ),
