@@ -26,7 +26,6 @@ class LoginPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-
                   const SizedBox(
                     height: 50,
                   ),
@@ -45,7 +44,7 @@ class LoginPage extends StatelessWidget {
                               onChanged: (String value) {
                                 state.updateEmail(value);
                               },
-                              validator: notEmptyValidator,
+                              validator: validateNotEmpty,
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
                           ),
@@ -65,7 +64,7 @@ class LoginPage extends StatelessWidget {
                               onChanged: (String value) {
                                 state.updatePassword(value);
                               },
-                              validator: notEmptyValidator,
+                              validator: validateNotEmpty,
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
                           ),
@@ -78,7 +77,8 @@ class LoginPage extends StatelessWidget {
                               ),
                               child: Text(
                                 'Masuk',
-                                style: Theme.of(context).textTheme.headlineSmall,
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall,
                               ),
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
@@ -93,9 +93,11 @@ class LoginPage extends StatelessWidget {
                                       DashboardPage.routeName,
                                     );
                                   } catch (error) {
-                                    customInfoDialog(context: context,
-                                        title: 'Error!',
-                                        content: error.toString(),);
+                                    customInfoDialog(
+                                      context: context,
+                                      title: 'Error!',
+                                      content: error.toString(),
+                                    );
                                   }
                                 }
                               },

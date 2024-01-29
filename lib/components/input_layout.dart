@@ -19,9 +19,14 @@ class InputLayout extends StatelessWidget {
   }
 }
 
-InputDecoration customInputDecoration(String hintText, {Widget? suffixIcon}) {
+InputDecoration customInputDecoration(
+  String hintText, {
+  Widget? suffixIcon,
+  Widget? prefixIcon,
+}) {
   return InputDecoration(
     hintText: hintText,
+    prefixIcon: prefixIcon,
     suffixIcon: suffixIcon,
     floatingLabelBehavior: FloatingLabelBehavior.never,
     border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),

@@ -83,5 +83,4 @@ class HomepageProvider extends ChangeNotifier {
       rethrow;
     }
   }
-
 }

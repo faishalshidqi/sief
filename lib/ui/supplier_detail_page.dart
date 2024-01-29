@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sief_firebase/common/styles.dart';
@@ -86,9 +87,14 @@ class SupplierDetailPage extends StatelessWidget {
                                             state.updateName(value);
                                           },
                                           keyboardType: TextInputType.name,
-                                          validator: notEmptyValidator,
+                                          validator: validateNotEmpty,
                                           initialValue: data['name'],
                                           autofocus: true,
+                                          inputFormatters: [
+                                            LengthLimitingTextInputFormatter(
+                                              50,
+                                            ),
+                                          ],
                                         ),
                                       ),
                                       InputLayout(
@@ -101,9 +107,18 @@ class SupplierDetailPage extends StatelessWidget {
                                             state.updatePhone(value);
                                           },
                                           keyboardType: TextInputType.phone,
-                                          validator: notEmptyValidator,
+                                          validator: validateNotEmpty,
                                           initialValue: data['phone'],
                                           autofocus: true,
+                                          inputFormatters: [
+                                            LengthLimitingTextInputFormatter(
+                                              13,
+                                            ),
+                                            FilteringTextInputFormatter
+                                                .singleLineFormatter,
+                                            FilteringTextInputFormatter
+                                                .digitsOnly,
+                                          ],
                                         ),
                                       ),
                                       InputLayout(
@@ -116,9 +131,14 @@ class SupplierDetailPage extends StatelessWidget {
                                             state.updateAddress(value);
                                           },
                                           keyboardType: TextInputType.multiline,
-                                          validator: notEmptyValidator,
+                                          validator: validateNotEmpty,
                                           initialValue: data['address'],
                                           autofocus: true,
+                                          inputFormatters: [
+                                            LengthLimitingTextInputFormatter(
+                                              50,
+                                            ),
+                                          ],
                                         ),
                                       ),
                                       Container(
@@ -178,13 +198,6 @@ class SupplierDetailPage extends StatelessWidget {
                                             }
                                           },
                                         ),
-                                      ),
-                                      const SizedBox(height: 20),
-                                      Text(
-                                          'Untuk data yang tidak berubah, silakan datanya ditulis kembali agar dapat tersimpan',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall,
                                       ),
                                     ],
                                   ),

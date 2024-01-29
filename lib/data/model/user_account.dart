@@ -7,6 +7,13 @@ class UserAccount {
   final DateTime addedAt;
   final DateTime updatedAt;
 
-  UserAccount({required this.name, required this.email, required this.role, required this.uid, required this.docId, required this.addedAt, required this.updatedAt});
-
+  UserAccount({
+    required this.name,
+    required this.email,
+    required this.role,
+    required this.uid,
+    required this.docId,
+    required this.addedAt,
+    required this.updatedAt,
+  });
 }

@@ -38,24 +38,24 @@ class UserFormPage extends StatelessWidget {
                           InputLayout(
                             'Nama',
                             TextFormField(
-                              decoration: customInputDecoration('Nama Pengguna'),
+                              decoration:
+                                  customInputDecoration('Nama Pengguna'),
                               onChanged: (String value) {
                                 state.updateUsername(value);
                               },
                               keyboardType: TextInputType.name,
-                              validator: notEmptyValidator,
+                              validator: validateNotEmpty,
                             ),
                           ),
                           InputLayout(
                             'Email',
                             TextFormField(
-                              decoration:
-                                  customInputDecoration('Alamat Email'),
+                              decoration: customInputDecoration('Alamat Email'),
                               onChanged: (String value) {
                                 state.updateEmail(value);
                               },
                               keyboardType: TextInputType.emailAddress,
-                              validator: notEmptyValidator,
+                              validator: validateNotEmpty,
                             ),
                           ),
                           InputLayout(
@@ -65,7 +65,7 @@ class UserFormPage extends StatelessWidget {
                               onChanged: (String value) {
                                 state.updatePassword(value);
                               },
-                              validator: notEmptyValidator,
+                              validator: validateNotEmpty,
                             ),
                           ),
                           InputLayout(
@@ -102,12 +102,12 @@ class UserFormPage extends StatelessWidget {
                                     CollectionReference accountCollection =
                                         _firestore.collection('accounts');
 
-                                    await _auth
-                                        .createUserWithEmailAndPassword(
+                                    await _auth.createUserWithEmailAndPassword(
                                       email: state.email!,
                                       password: state.password!,
                                     );
-                                    Timestamp timestamp = Timestamp.fromDate(DateTime.now());
+                                    Timestamp timestamp =
+                                        Timestamp.fromDate(DateTime.now());
                                     final docId = accountCollection.doc().id;
 
                                     await accountCollection.doc(docId).set({

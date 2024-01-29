@@ -10,6 +10,7 @@ import 'package:sief_firebase/data/model/supplier.dart';
 import 'package:sief_firebase/firebase_options.dart';
 import 'package:sief_firebase/provider/homepage_provider.dart';
 import 'package:sief_firebase/provider/login_provider.dart';
+import 'package:sief_firebase/provider/report_provider.dart';
 import 'package:sief_firebase/provider/stock_detail_provider.dart';
 import 'package:sief_firebase/provider/stocks_provider.dart';
 import 'package:sief_firebase/provider/supplier_detail_provider.dart';
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => StocksProvider()),
         ChangeNotifierProvider(create: (_) => StockDetailProvider()),
         ChangeNotifierProvider(create: (_) => HomepageProvider()),
+        ChangeNotifierProvider(create: (_) => ReportProvider()),
       ],
       child: MaterialApp(
         title: 'Sistem Inventaris Erwin Furniture',
@@ -89,14 +91,13 @@ class MyApp extends StatelessWidget {
           SuppliersListPage.routeName: (context) => const SuppliersListPage(),
           SupplierFormPage.routeName: (context) => const SupplierFormPage(),
           SupplierDetailPage.routeName: (context) => SupplierDetailPage(
-                supplier: ModalRoute.of(context)?.settings.arguments
-                    as Supplier,
+                supplier:
+                    ModalRoute.of(context)?.settings.arguments as Supplier,
               ),
           StocksListPage.routeName: (context) => const StocksListPage(),
           StockFormPage.routeName: (context) => const StockFormPage(),
           StockDetailPage.routeName: (context) => StockDetailPage(
-                stock: ModalRoute.of(context)?.settings.arguments
-                    as Stock,
+                stock: ModalRoute.of(context)?.settings.arguments as Stock,
               ),
           UsersListPage.routeName: (context) => const UsersListPage(),
           UserFormPage.routeName: (context) => const UserFormPage(),

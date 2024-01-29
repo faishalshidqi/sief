@@ -213,6 +213,9 @@ class StocksListPage extends StatelessWidget {
                               child: const Icon(CupertinoIcons.trash),
                             ),
                             onDismissed: (direction) {
+                              if (imageUrl != '') {
+                                _storage.refFromURL(imageUrl).delete();
+                              }
                               _firestore
                                   .collection('stocks')
                                   .doc(docId)
@@ -238,23 +241,6 @@ class StocksListPage extends StatelessWidget {
                               ),
                               subtitle: Text(
                                 'Stok:\t $amount',
-                              ),
-                              trailing: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      state.updateOutingStockAmount(1);
-                                    },
-                                    icon: const Icon(Icons.add),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {
-                                      state.updateOutingStockAmount(-1);
-                                    },
-                                    icon: const Icon(Icons.remove),
-                                  ),
-                                ],
                               ),
                               onTap: () {
                                 Navigation.intentWithData(

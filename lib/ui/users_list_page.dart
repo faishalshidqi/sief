@@ -16,10 +16,11 @@ class UsersListPage extends StatelessWidget {
     return Scaffold(
       appBar: customAppBar(title: 'Daftar Pengguna'),
       floatingActionButton: customFloatingActionButton(
-          context: context,
-          text: 'Tambah Pengguna',
-          icon: Icons.add,
-          routeName: UserFormPage.routeName,),
+        context: context,
+        text: 'Tambah Pengguna',
+        icon: Icons.add,
+        routeName: UserFormPage.routeName,
+      ),
       body: SafeArea(
         child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
           stream: _firestore.collection('accounts').snapshots(),
@@ -45,7 +46,10 @@ class UsersListPage extends StatelessWidget {
 
                 return Dismissible(
                   key: Key(uid),
-                  background: Container(color: Colors.red, child: const Icon(CupertinoIcons.trash),),
+                  background: Container(
+                    color: Colors.red,
+                    child: const Icon(CupertinoIcons.trash),
+                  ),
                   onDismissed: (direction) {
                     _firestore.collection('accounts').doc(docId).delete();
                   },

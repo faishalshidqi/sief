@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -93,9 +94,14 @@ class StockDetailPage extends StatelessWidget {
                                           onChanged: (String value) =>
                                               state.updateName(value),
                                           keyboardType: TextInputType.name,
-                                          validator: notEmptyValidator,
+                                          validator: validateNotEmpty,
                                           initialValue: data['name'],
                                           autofocus: true,
+                                          inputFormatters: [
+                                            LengthLimitingTextInputFormatter(
+                                              50,
+                                            ),
+                                          ],
                                         ),
                                       ),
                                       Container(
@@ -205,6 +211,42 @@ class StockDetailPage extends StatelessWidget {
                                           ),
                                         ),
                                       ),
+                                      ListTile(
+                                        title: const Text('Perubahan Jumlah'),
+                                        subtitle: state.newStockAmount == 0
+                                            ? Text(
+                                                state.newStockAmount.toString(),
+                                              )
+                                            : Row(
+                                                children: [
+                                                  Text(
+                                                    (state.newStockAmount -
+                                                            data['amount'])
+                                                        .toString(),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Text(
+                                                    '(${data["amount"].toString()}',
+                                                  ),
+                                                  const Icon(
+                                                    Icons.arrow_forward,
+                                                  ),
+                                                  Text(
+                                                    '${state.newStockAmount.toString()})',
+                                                  ),
+                                                ],
+                                              ),
+                                        /*subtitle: state.newStockAmount == 0 ? Text(data['amount'].toString()) :
+                                        Row(
+                                          children: [
+                                            Text(data['amount'].toString()),
+                                            const Icon(Icons.arrow_forward),
+                                            Text(state.newStockAmount.toString()),
+                                          ],
+                                        ),*/
+                                      ),
                                       InputLayout(
                                         'Jumlah Stok',
                                         TextFormField(
@@ -213,11 +255,25 @@ class StockDetailPage extends StatelessWidget {
                                           onChanged: (String value) {
                                             state
                                                 .updateAmount(int.parse(value));
+                                            state.updateNewStockAmount(
+                                              int.parse(value),
+                                            );
+                                            state.updateOutingStockAmount(
+                                              (state.newStockAmount -
+                                                  data['amount']),
+                                            );
                                           },
                                           keyboardType: TextInputType.number,
                                           initialValue:
                                               data['amount'].toString(),
-                                          validator: notEmptyValidator,
+                                          validator: validateNotEmpty,
+                                          inputFormatters: [
+                                            LengthLimitingTextInputFormatter(5),
+                                            FilteringTextInputFormatter
+                                                .singleLineFormatter,
+                                            FilteringTextInputFormatter
+                                                .digitsOnly,
+                                          ],
                                         ),
                                       ),
                                       InputLayout(
@@ -233,7 +289,13 @@ class StockDetailPage extends StatelessWidget {
                                           keyboardType: TextInputType.number,
                                           initialValue:
                                               data['price'].toString(),
-                                          validator: notEmptyValidator,
+                                          validator: validateNotEmpty,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter
+                                                .singleLineFormatter,
+                                            FilteringTextInputFormatter
+                                                .digitsOnly,
+                                          ],
                                         ),
                                       ),
                                       InputLayout(
@@ -258,7 +320,8 @@ class StockDetailPage extends StatelessWidget {
                                                   .map((document) {
                                                 final String name =
                                                     document.data()['name'];
-                                                final String docId = document.data()['docId'];
+                                                final String docId =
+                                                    document.data()['docId'];
                                                 return DropdownMenuItem(
                                                   value: docId,
                                                   child: Text(name),
@@ -267,7 +330,9 @@ class StockDetailPage extends StatelessWidget {
                                               onChanged: (selected) {
                                                 state.updateSupplier(selected);
                                               },
-                                              value: data['supplier'].toString().split(',')[1],
+                                              value: data['supplier']
+                                                  .toString()
+                                                  .split(',')[1],
                                             );
                                           },
                                         ),
@@ -387,7 +452,9 @@ class StockDetailPage extends StatelessWidget {
                                                 .titleLarge,
                                           ),
                                           Text(
-                                            data['supplier'].toString().split(',')[0],
+                                            data['supplier']
+                                                .toString()
+                                                .split(',')[0],
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .titleLarge,

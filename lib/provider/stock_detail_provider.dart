@@ -13,7 +13,8 @@ class StockDetailProvider extends ChangeNotifier {
   final _firestore = FirebaseFirestore.instance;
   StockDetailProvider();
 
-  int outingStockAmount = 0;
+  int newStockAmount = 0;
+  dynamic outingStockAmount = 0;
   bool isEditMode = false;
   String? name;
   int? amount;
@@ -24,7 +25,12 @@ class StockDetailProvider extends ChangeNotifier {
   XFile? file;
   ImagePicker imagePicker = ImagePicker();
 
-  updateOutingStockAmount(int value) {
+  void updateNewStockAmount(int value) {
+    newStockAmount = value;
+    notifyListeners();
+  }
+
+  void updateOutingStockAmount(value) {
     outingStockAmount = value;
     notifyListeners();
   }
@@ -87,14 +93,21 @@ class StockDetailProvider extends ChangeNotifier {
         'supplier': supplier,
         'imageUrl': imageUrl,
         'price': price,
-        'added_at': timestamp,
+        'updated_at': timestamp,
       });
 
-      await reportsCollection.doc(DateFormat('MMMM yyyy').format(timestamp.toDate())).set({
+      await reportsCollection
+          .doc(
+            DateFormat('MMMM yyyy').format(timestamp.toDate()),
+          )
+          .collection(docId!)
+          .doc()
+          .set({
         'docId': docId,
         'type': 'STOCK-UPDATED',
         'name': name,
         'amount': amount,
+        'delta_stock': outingStockAmount,
         'price': price,
         'added_at': timestamp,
       });
@@ -105,6 +118,8 @@ class StockDetailProvider extends ChangeNotifier {
       amount = null;
       supplier = null;
       file = null;
+      newStockAmount = 0;
+      outingStockAmount = 0;
       imageUrl = '';
     }
   }
@@ -117,6 +132,9 @@ class StockDetailProvider extends ChangeNotifier {
       Reference dirUpload = _storage.ref().child('/furnitures/$id}');
       Reference storedDir = dirUpload.child(uniqueFilename);
 
+      if (imageUrl != '') {
+        _storage.refFromURL(imageUrl).delete();
+      }
       await storedDir.putFile(File(file!.path));
 
       return await storedDir.getDownloadURL();
@@ -132,8 +150,7 @@ class StockDetailProvider extends ChangeNotifier {
         width: 180,
         height: 180,
       );
-    }
-    else if (file != null) {
+    } else if (file != null) {
       return Image.file(
         File(file!.path),
         width: 180,

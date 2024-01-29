@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -47,7 +48,10 @@ class StockFormPage extends StatelessWidget {
                                 state.updateName(value);
                               },
                               keyboardType: TextInputType.text,
-                              validator: notEmptyValidator,
+                              validator: validateNotEmpty,
+                              inputFormatters: [
+                                LengthLimitingTextInputFormatter(50),
+                              ],
                             ),
                           ),
                           Container(
@@ -139,10 +143,14 @@ class StockFormPage extends StatelessWidget {
                             TextFormField(
                               decoration: customInputDecoration('Jumlah'),
                               onChanged: (String value) {
-                                state.updateAmount(int.parse(value));
+                                state.updateAmount(value);
                               },
                               keyboardType: TextInputType.number,
-                              validator: notEmptyValidator,
+                              validator: validateNotEmpty,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.singleLineFormatter,
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
                             ),
                           ),
                           InputLayout(
@@ -150,10 +158,14 @@ class StockFormPage extends StatelessWidget {
                             TextFormField(
                               decoration: customInputDecoration('Harga'),
                               onChanged: (String value) {
-                                state.updatePrice(int.parse(value));
+                                state.updatePrice(value);
                               },
                               keyboardType: TextInputType.number,
-                              validator: notEmptyValidator,
+                              validator: validateNotEmpty,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.singleLineFormatter,
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
                             ),
                           ),
                           InputLayout(
@@ -183,7 +195,7 @@ class StockFormPage extends StatelessWidget {
                                     );
                                   }).toList(),
                                   onChanged: (selected) =>
-                                      state.updateSupplier(selected!),
+                                      state.updateSupplier(selected ?? ''),
                                 );
                               },
                             ),
@@ -236,11 +248,19 @@ class StockFormPage extends StatelessWidget {
                                       );
                                     });
 
-                                    await reportsCollection.doc(DateFormat('MMMM yyyy').format(timestamp.toDate())).collection(id).doc().set({
+                                    await reportsCollection
+                                        .doc(
+                                          DateFormat('MMMM yyyy')
+                                              .format(timestamp.toDate()),
+                                        )
+                                        .collection(id)
+                                        .doc()
+                                        .set({
                                       'docId': id,
-                                      'type': 'STOCK-ADDED',
+                                      'type': 'STOCK MASUK',
                                       'name': state.name,
                                       'amount': state.amount,
+                                      'delta_stock': state.amount,
                                       'price': state.price,
                                       'added_at': timestamp,
                                     });
@@ -259,6 +279,7 @@ class StockFormPage extends StatelessWidget {
                                   } finally {
                                     state.file = null;
                                   }
+                                  _formKey.currentState!.reset();
                                 }
                               },
                             ),

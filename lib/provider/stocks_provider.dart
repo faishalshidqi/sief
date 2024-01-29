@@ -14,7 +14,7 @@ class StocksProvider extends ChangeNotifier {
   final _storage = FirebaseStorage.instance;
   final _auth = FirebaseAuth.instance;
 
-  bool isGridView = true;
+  bool isGridView = false;
   int outingStockAmount = 0;
   ImagePicker imagePicker = ImagePicker();
   XFile? file;
@@ -35,25 +35,25 @@ class StocksProvider extends ChangeNotifier {
   }
 
   void addStockRecord() async {
-      CollectionReference stocksCollection = _firestore.collection('stocks');
-      Timestamp timestamp = Timestamp.fromDate(DateTime.now());
+    CollectionReference stocksCollection = _firestore.collection('stocks');
+    Timestamp timestamp = Timestamp.fromDate(DateTime.now());
 
-      final id = _firestore.collection('stocks').doc().id;
-      String url = await uploadImage(id: id);
-      updateImageUrl(url);
+    final id = _firestore.collection('stocks').doc().id;
+    String url = await uploadImage(id: id);
+    updateImageUrl(url);
 
-      await stocksCollection.doc(id).set({
-        'uid': _auth.currentUser!.uid,
-        'docId': id,
-        'name': name,
-        'amount': amount,
-        'supplier': supplier,
-        'imageUrl': imageUrl,
-        'price': price,
-        'added_at': timestamp,
-        'updated_at': timestamp,
-      });
-      file = null;
+    await stocksCollection.doc(id).set({
+      'uid': _auth.currentUser!.uid,
+      'docId': id,
+      'name': name,
+      'amount': amount,
+      'supplier': supplier,
+      'imageUrl': imageUrl,
+      'price': price,
+      'added_at': timestamp,
+      'updated_at': timestamp,
+    });
+    file = null;
   }
 
   Future<String> uploadImage({required String id}) async {
@@ -67,8 +67,7 @@ class StocksProvider extends ChangeNotifier {
       await storedDir.putFile(File(file!.path));
 
       return await storedDir.getDownloadURL();
-    }
-    catch (error) {
+    } catch (error) {
       rethrow;
     }
   }
@@ -99,8 +98,11 @@ class StocksProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateAmount(int value) {
-    amount = value;
+  void updateAmount(String value) {
+    if (value == '') {
+      value = '0';
+    }
+    amount = int.parse(value);
     notifyListeners();
   }
 
@@ -114,8 +116,11 @@ class StocksProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updatePrice(int value) {
-    price = value;
+  void updatePrice(String value) {
+    if (value.toString() == '') {
+      value = '0';
+    }
+    price = int.parse(value);
     notifyListeners();
   }
 }

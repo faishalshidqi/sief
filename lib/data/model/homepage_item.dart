@@ -5,5 +5,9 @@ class HomepageItem {
   IconData icon;
   String routeName;
 
-  HomepageItem({required this.title, required this.icon, required this.routeName});
+  HomepageItem({
+    required this.title,
+    required this.icon,
+    required this.routeName,
+  });
 }

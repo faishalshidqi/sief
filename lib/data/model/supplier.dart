@@ -6,5 +6,12 @@ class Supplier {
   final DateTime addedAt;
   final DateTime updatedAt;
 
-  Supplier({required this.name, required this.phone, required this.docId, required this.address, required this.addedAt, required this.updatedAt});
+  Supplier({
+    required this.name,
+    required this.phone,
+    required this.docId,
+    required this.address,
+    required this.addedAt,
+    required this.updatedAt,
+  });
 }

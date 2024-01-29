@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:sief_firebase/common/styles.dart';
 
-customFloatingActionButton({required BuildContext context, required String text, required IconData icon, required String routeName}) {
+customFloatingActionButton({
+  required BuildContext context,
+  required String text,
+  required IconData icon,
+  required String routeName,
+}) {
   return FloatingActionButton.extended(
     onPressed: () {
       Navigator.pushNamed(context, routeName);

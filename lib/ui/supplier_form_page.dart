@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:sief_firebase/common/styles.dart';
 import 'package:sief_firebase/common/validators.dart';
@@ -41,7 +42,10 @@ class SupplierFormPage extends StatelessWidget {
                                 state.updateName(value);
                               },
                               keyboardType: TextInputType.name,
-                              validator: notEmptyValidator,
+                              validator: validateNotEmpty,
+                              inputFormatters: [
+                                LengthLimitingTextInputFormatter(50),
+                              ],
                             ),
                           ),
                           InputLayout(
@@ -54,7 +58,12 @@ class SupplierFormPage extends StatelessWidget {
                                 state.updatePhone(value);
                               },
                               keyboardType: TextInputType.phone,
-                              validator: notEmptyValidator,
+                              validator: validateNotEmpty,
+                              inputFormatters: [
+                                LengthLimitingTextInputFormatter(13),
+                                FilteringTextInputFormatter.singleLineFormatter,
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
                             ),
                           ),
                           InputLayout(
@@ -65,7 +74,10 @@ class SupplierFormPage extends StatelessWidget {
                                 state.updateAddress(value);
                               },
                               keyboardType: TextInputType.streetAddress,
-                              validator: notEmptyValidator,
+                              validator: validateNotEmpty,
+                              inputFormatters: [
+                                LengthLimitingTextInputFormatter(50),
+                              ],
                             ),
                           ),
                           Container(

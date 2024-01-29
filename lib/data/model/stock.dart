@@ -9,5 +9,15 @@ class Stock {
   final DateTime addedAt;
   final DateTime updatedAt;
 
-  Stock({required this.name, required this.amount, required this.docId, required this.price, required this.imageUrl, required this.supplier, required this.uid, required this.addedAt, required this.updatedAt});
+  Stock({
+    required this.name,
+    required this.amount,
+    required this.docId,
+    required this.price,
+    required this.imageUrl,
+    required this.supplier,
+    required this.uid,
+    required this.addedAt,
+    required this.updatedAt,
+  });
 }
