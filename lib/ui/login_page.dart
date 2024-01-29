@@ -27,7 +27,7 @@ class LoginPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(
-                    height: 50,
+                    height: 30,
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10),

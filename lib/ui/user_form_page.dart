@@ -134,6 +134,7 @@ class UserFormPage extends StatelessWidget {
                                     );
                                   }
                                 }
+                                _formKey.currentState!.reset();
                               },
                             ),
                           ),
