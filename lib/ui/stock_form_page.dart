@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sief_firebase/common/navigation.dart';
 import 'package:sief_firebase/common/styles.dart';
@@ -249,11 +248,11 @@ class StockFormPage extends StatelessWidget {
                                     });
 
                                     await reportsCollection
-                                        .doc(
+                                        /*.doc(
                                           DateFormat('MMMM yyyy')
                                               .format(timestamp.toDate()),
                                         )
-                                        .collection(id)
+                                        .collection(id)*/
                                         .doc()
                                         .set({
                                       'docId': id,

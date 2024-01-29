@@ -146,7 +146,7 @@ class StocksListPage extends StatelessWidget {
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 const BorderRadius.only(
-                                              bottomLeft: Radius.circular(8),
+                                              bottomLeft: Radius.circular(13),
                                             ),
                                             border: Border.all(),
                                           ),
@@ -165,7 +165,7 @@ class StocksListPage extends StatelessWidget {
                                           ),
                                           decoration: const BoxDecoration(
                                             borderRadius: BorderRadius.only(
-                                              bottomRight: Radius.circular(8),
+                                              bottomRight: Radius.circular(13),
                                             ),
                                             border: Border(
                                               top: BorderSide(),
@@ -175,7 +175,7 @@ class StocksListPage extends StatelessWidget {
                                           ),
                                           alignment: Alignment.center,
                                           child: Text(
-                                            amount,
+                                            'Stok: $amount',
                                           ),
                                         ),
                                       ),
