@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-const Color primaryColor = Color(0xff356859);
-const Color secondaryColor = Color(0xfffd5523);
+const Color primaryColor = Color(0xff2e1503);
+const Color secondaryColor = Color(0xff356859);
 
-const Color primaryColor500 = Color(0xff37966f);
-const Color primaryColor100 = Color(0xffb9e4c9);
+const Color primaryColor500 = Color(0xff652a0e);
+const Color primaryColor100 = Color(0xff9a7b4f);
 
-const Color secondaryColor50 = Color(0xfffffbe6);
+const Color secondaryColor50 = Color(0xffb9e4c9);
 
 final TextTheme siefTextTheme = TextTheme(
   displayLarge: GoogleFonts.montserrat(

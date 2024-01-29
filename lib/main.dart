@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           colorScheme: Theme.of(context).colorScheme.copyWith(
                 primary: primaryColor,
-                onPrimary: Colors.black,
+                onPrimary: const Color(0xff121212),
                 secondary: secondaryColor,
               ),
           useMaterial3: true,
@@ -82,7 +82,7 @@ class MyApp extends StatelessWidget {
           navigator: _auth.currentUser != null
               ? const DashboardPage()
               : const LoginPage(),
-          //durationInSeconds: 5,
+          durationInSeconds: 5,
         ),
         initialRoute: '/',
         routes: {

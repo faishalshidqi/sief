@@ -58,7 +58,7 @@ class StocksListPage extends StatelessWidget {
                 if (!snapshot.hasData) {
                   return const Center(
                     child: CircularProgressIndicator(
-                      color: primaryColor,
+                      color: primaryColor500,
                     ),
                   );
                 } else if (snapshot.data!.size == 0 || snapshot.data == null) {
