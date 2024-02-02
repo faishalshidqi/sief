@@ -96,10 +96,6 @@ class StockDetailProvider extends ChangeNotifier {
       });
 
       await reportsCollection
-          /*.doc(
-            DateFormat('MMMM yyyy').format(timestamp.toDate()),
-          )
-          .collection(docId!)*/
           .doc()
           .set({
         'docId': docId,

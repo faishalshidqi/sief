@@ -238,14 +238,6 @@ class StockDetailPage extends StatelessWidget {
                                                   ),
                                                 ],
                                               ),
-                                        /*subtitle: state.newStockAmount == 0 ? Text(data['amount'].toString()) :
-                                        Row(
-                                          children: [
-                                            Text(data['amount'].toString()),
-                                            const Icon(Icons.arrow_forward),
-                                            Text(state.newStockAmount.toString()),
-                                          ],
-                                        ),*/
                                       ),
                                       InputLayout(
                                         'Jumlah Stok',

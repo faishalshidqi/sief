@@ -20,21 +20,23 @@ class InventoryReportPage extends StatelessWidget {
         return Scaffold(
           appBar: customAppBar(
             title: 'Laporan Inventaris',
-            actions: state.isSortInc ? [
-              IconButton(
-                  onPressed: () {
-                    state.updateSortInc(false);
-                  },
-                  icon: const Icon(Icons.arrow_downward),
-              ),
-            ] : [
-              IconButton(
-                onPressed: () {
-                  state.updateSortInc(true);
-                },
-                icon: const Icon(Icons.arrow_upward),
-              ),
-            ],
+            actions: state.isSortInc
+                ? [
+                    IconButton(
+                      onPressed: () {
+                        state.updateSortInc(false);
+                      },
+                      icon: const Icon(Icons.arrow_downward),
+                    ),
+                  ]
+                : [
+                    IconButton(
+                      onPressed: () {
+                        state.updateSortInc(true);
+                      },
+                      icon: const Icon(Icons.arrow_upward),
+                    ),
+                  ],
           ),
           body: SafeArea(
             child: Column(

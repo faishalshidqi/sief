@@ -183,6 +183,7 @@ class StockFormPage extends StatelessWidget {
                                   decoration: customInputDecoration(
                                     'Supplier Furnitur',
                                   ),
+                                  validator: validateNotEmpty,
                                   items: snapshot.data!.docs.map((document) {
                                     final String name = document.data()['name'];
                                     final String docId =
@@ -248,11 +249,6 @@ class StockFormPage extends StatelessWidget {
                                     });
 
                                     await reportsCollection
-                                        /*.doc(
-                                          DateFormat('MMMM yyyy')
-                                              .format(timestamp.toDate()),
-                                        )
-                                        .collection(id)*/
                                         .doc()
                                         .set({
                                       'docId': id,
@@ -277,8 +273,8 @@ class StockFormPage extends StatelessWidget {
                                     );
                                   } finally {
                                     state.file = null;
+                                    _formKey.currentState!.reset();
                                   }
-                                  _formKey.currentState!.reset();
                                 }
                               },
                             ),

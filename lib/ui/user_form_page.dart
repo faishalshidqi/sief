@@ -133,8 +133,10 @@ class UserFormPage extends StatelessWidget {
                                       content: error.toString(),
                                     );
                                   }
+                                  finally {
+                                    _formKey.currentState!.reset();
+                                  }
                                 }
-                                _formKey.currentState!.reset();
                               },
                             ),
                           ),
