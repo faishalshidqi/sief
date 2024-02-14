@@ -7,6 +7,17 @@ class UsersProvider extends ChangeNotifier {
   String? email;
   String? password;
   String? repeatPassword;
+  String? role;
+
+  List<String> roles = [
+    'gudang',
+    'kasir',
+  ];
+
+  void updateRole(String value) {
+    role = value;
+    notifyListeners();
+  }
 
   void updateUsername(String value) {
     username = value;

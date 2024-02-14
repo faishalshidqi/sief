@@ -308,6 +308,7 @@ class StockDetailPage extends StatelessWidget {
                                               decoration: customInputDecoration(
                                                 'Supplier',
                                               ),
+                                              validator: validateNotEmpty,
                                               items: snapshot.data!.docs
                                                   .map((document) {
                                                 final String name =

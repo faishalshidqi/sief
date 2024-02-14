@@ -11,14 +11,19 @@ import 'package:sief_firebase/firebase_options.dart';
 import 'package:sief_firebase/provider/homepage_provider.dart';
 import 'package:sief_firebase/provider/login_provider.dart';
 import 'package:sief_firebase/provider/report_provider.dart';
+import 'package:sief_firebase/provider/sales_report_provider.dart';
+import 'package:sief_firebase/provider/selling_provider.dart';
 import 'package:sief_firebase/provider/stock_detail_provider.dart';
 import 'package:sief_firebase/provider/stocks_provider.dart';
 import 'package:sief_firebase/provider/supplier_detail_provider.dart';
 import 'package:sief_firebase/provider/suppliers_provider.dart';
 import 'package:sief_firebase/provider/users_provider.dart';
+import 'package:sief_firebase/ui/cart_page.dart';
 import 'package:sief_firebase/ui/dashboard_page.dart';
 import 'package:sief_firebase/ui/inventory_report_page.dart';
 import 'package:sief_firebase/ui/login_page.dart';
+import 'package:sief_firebase/ui/sales_report_page.dart';
+import 'package:sief_firebase/ui/selling_page.dart';
 import 'package:sief_firebase/ui/stock_detail_page.dart';
 import 'package:sief_firebase/ui/stock_form_page.dart';
 import 'package:sief_firebase/ui/stocks_list_page.dart';
@@ -50,6 +55,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => StockDetailProvider()),
         ChangeNotifierProvider(create: (_) => HomepageProvider()),
         ChangeNotifierProvider(create: (_) => ReportProvider()),
+        ChangeNotifierProvider(create: (_) => SellingProvider()),
+        ChangeNotifierProvider(create: (_) => SalesReportProvider()),
       ],
       child: MaterialApp(
         title: 'Sistem Inventaris Erwin Furniture',
@@ -103,6 +110,9 @@ class MyApp extends StatelessWidget {
           UserFormPage.routeName: (context) => const UserFormPage(),
           InventoryReportPage.routeName: (context) =>
               const InventoryReportPage(),
+          SellingPage.routeName: (context) => const SellingPage(),
+          CartPage.routeName: (context) => const CartPage(),
+          SalesReportPage.routeName: (context) => const SalesReportPage(),
         },
       ),
     );

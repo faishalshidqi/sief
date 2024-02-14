@@ -59,6 +59,22 @@ class UserFormPage extends StatelessWidget {
                             ),
                           ),
                           InputLayout(
+                            'Peran',
+                            DropdownButtonFormField(
+                              decoration:
+                                  customInputDecoration('Peran Pengguna'),
+                              validator: validateNotEmpty,
+                              items: state.roles.map((role) {
+                                return DropdownMenuItem(
+                                  value: role,
+                                  child: Text(role),
+                                );
+                              }).toList(),
+                              onChanged: (selected) =>
+                                  state.updateRole(selected!),
+                            ),
+                          ),
+                          InputLayout(
                             'Kata Sandi',
                             TextFormField(
                               decoration: customInputDecoration('Kata Sandi'),
@@ -115,7 +131,7 @@ class UserFormPage extends StatelessWidget {
                                       'name': state.username,
                                       'email': state.email,
                                       'docId': docId,
-                                      'role': 'user',
+                                      'role': state.role,
                                       'added_at': timestamp,
                                       'updated_at': timestamp,
                                     });
@@ -132,8 +148,7 @@ class UserFormPage extends StatelessWidget {
                                       title: 'Error!',
                                       content: error.toString(),
                                     );
-                                  }
-                                  finally {
+                                  } finally {
                                     _formKey.currentState!.reset();
                                   }
                                 }

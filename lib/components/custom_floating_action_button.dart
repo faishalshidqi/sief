@@ -6,10 +6,11 @@ customFloatingActionButton({
   required String text,
   required IconData icon,
   required String routeName,
+  Function()? onPressed,
 }) {
   return FloatingActionButton.extended(
     onPressed: () {
-      Navigator.pushNamed(context, routeName);
+      onPressed ?? Navigator.pushNamed(context, routeName);
     },
     backgroundColor: primaryColor100,
     label: Padding(

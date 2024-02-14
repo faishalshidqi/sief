@@ -99,7 +99,7 @@ class StockDetailProvider extends ChangeNotifier {
           .doc()
           .set({
         'docId': docId,
-        'type': 'STOCK-UPDATED',
+        'type': 'STOCK-DIPERBARUI',
         'name': name,
         'amount': amount,
         'delta_stock': outingStockAmount,

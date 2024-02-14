@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ReportProvider extends ChangeNotifier {
-  ReportProvider();
+class SalesReportProvider extends ChangeNotifier {
+  SalesReportProvider();
 
   bool isSortInc = true;
   int? day;
