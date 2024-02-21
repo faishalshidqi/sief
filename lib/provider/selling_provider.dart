@@ -41,29 +41,6 @@ class SellingProvider extends ChangeNotifier {
     cartContent.add(sale!);
   }
 
-  /*void addToCart() async {
-    if (cartContent.isEmpty) {
-      cartContent.add(sale!.toMap());
-    }
-    for (var content in cartContent) {
-      bool isPresent = content['docId'] == sale!.docId;
-      present = isPresent;
-      cnt = content;
-      if (isPresent) {
-        break;
-      }
-    }
-    sale!.outingAmount++;
-    notifyListeners();
-    if (present) {
-      cnt = sale!.toMap();
-    } else {
-      cartContent.add(sale!.toMap());
-    }
-    present = false;
-  }
-   */
-
   void clearCart() {
     cartContent.clear();
     notifyListeners();

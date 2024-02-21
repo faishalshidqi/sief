@@ -21,8 +21,10 @@ import 'package:sief_firebase/provider/suppliers_provider.dart';
 import 'package:sief_firebase/provider/users_provider.dart';
 import 'package:sief_firebase/ui/cart_page.dart';
 import 'package:sief_firebase/ui/dashboard_page.dart';
+import 'package:sief_firebase/ui/history_detail_page.dart';
 import 'package:sief_firebase/ui/inventory_report_page.dart';
 import 'package:sief_firebase/ui/login_page.dart';
+import 'package:sief_firebase/ui/sales_detail_page.dart';
 import 'package:sief_firebase/ui/sales_report_page.dart';
 import 'package:sief_firebase/ui/search_page.dart';
 import 'package:sief_firebase/ui/selling_page.dart';
@@ -121,8 +123,15 @@ class MyApp extends StatelessWidget {
           CartPage.routeName: (context) => const CartPage(),
           SalesReportPage.routeName: (context) => const SalesReportPage(),
           SearchPage.routeName: (context) => SearchPage(
-              sourceRouteName:
-                  ModalRoute.of(context)?.settings.arguments as String),
+                sourceRouteName:
+                    ModalRoute.of(context)?.settings.arguments as String,
+              ),
+          HistoryDetailPage.routeName: (context) => HistoryDetailPage(
+                docId: ModalRoute.of(context)?.settings.arguments as String,
+              ),
+          SalesHistoryDetailPage.routeName: (context) => SalesHistoryDetailPage(
+                docId: ModalRoute.of(context)?.settings.arguments as String,
+              ),
         },
       ),
     );

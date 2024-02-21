@@ -16,28 +16,7 @@ class HomepageProvider extends ChangeNotifier {
   UserAccount? account;
   static final _auth = FirebaseAuth.instance;
   static final _firestore = FirebaseFirestore.instance;
-  List<HomepageItem> itemList = [
-    /*HomepageItem(
-      title: 'Kelola Supplier',
-      icon: Icons.assistant,
-      routeName: SuppliersListPage.routeName,
-    ),
-    HomepageItem(
-      title: 'Kelola Stok',
-      icon: Icons.storage,
-      routeName: StocksListPage.routeName,
-    ),
-    HomepageItem(
-      title: 'Kelola Penjualan',
-      icon: Icons.attach_money,
-      routeName: SellingPage.routeName,
-    ),
-    HomepageItem(
-      title: 'Laporan',
-      icon: Icons.book_rounded,
-      routeName: InventoryReportPage.routeName,
-    ),*/
-  ];
+  List<HomepageItem> itemList = [];
 
   void getAccount() async {
     try {

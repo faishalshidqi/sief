@@ -28,8 +28,11 @@ class SellingPage extends StatelessWidget {
             actions: [
               IconButton(
                 onPressed: () async {
-                  Navigator.pushNamed(context, SearchPage.routeName,
-                      arguments: routeName);
+                  Navigator.pushNamed(
+                    context,
+                    SearchPage.routeName,
+                    arguments: routeName,
+                  );
                 },
                 icon: const Icon(Icons.search),
               ),

@@ -45,8 +45,11 @@ class StocksListPage extends StatelessWidget {
                     ),
               IconButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, SearchPage.routeName,
-                      arguments: routeName);
+                  Navigator.pushNamed(
+                    context,
+                    SearchPage.routeName,
+                    arguments: routeName,
+                  );
                 },
                 icon: const Icon(Icons.search),
               ),

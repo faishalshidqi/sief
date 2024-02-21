@@ -42,7 +42,6 @@ class SearchPage extends StatelessWidget {
                       ),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          print('source route name: $sourceRouteName');
                           Navigator.pushReplacementNamed(
                             context,
                             sourceRouteName,

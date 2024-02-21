@@ -3,10 +3,12 @@ import 'package:datepicker_dropdown/datepicker_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:sief_firebase/common/navigation.dart';
 import 'package:sief_firebase/common/styles.dart';
 import 'package:sief_firebase/components/custom_appbar.dart';
 import 'package:sief_firebase/components/input_layout.dart';
 import 'package:sief_firebase/provider/sales_report_provider.dart';
+import 'package:sief_firebase/ui/sales_detail_page.dart';
 
 class SalesReportPage extends StatelessWidget {
   static const routeName = '/sales_reports';
@@ -109,9 +111,9 @@ class SalesReportPage extends StatelessWidget {
                         return Column(
                           children: snapshot.data!.docs.map((document) {
                             final data = document.data();
-                            print('data: $data');
                             final name = data['name'];
                             final date = data['added_at'].toDate();
+                            final docId = data['furnitureId'];
                             final delta = data['amount'];
                             return ListTile(
                               title: Text(name),
@@ -124,6 +126,12 @@ class SalesReportPage extends StatelessWidget {
                                 style:
                                     Theme.of(context).textTheme.headlineSmall,
                               ),
+                              onTap: () {
+                                Navigation.intentWithData(
+                                  routeName: SalesHistoryDetailPage.routeName,
+                                  arguments: docId,
+                                );
+                              },
                             );
                           }).toList(),
                         );

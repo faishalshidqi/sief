@@ -3,10 +3,12 @@ import 'package:datepicker_dropdown/datepicker_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:sief_firebase/common/navigation.dart';
 import 'package:sief_firebase/common/styles.dart';
 import 'package:sief_firebase/components/custom_appbar.dart';
 import 'package:sief_firebase/components/input_layout.dart';
 import 'package:sief_firebase/provider/report_provider.dart';
+import 'package:sief_firebase/ui/history_detail_page.dart';
 
 class InventoryReportPage extends StatelessWidget {
   static const routeName = '/inventory_reports';
@@ -107,6 +109,7 @@ class InventoryReportPage extends StatelessWidget {
                           children: snapshot.data!.docs.map((document) {
                             final data = document.data();
                             final name = data['name'];
+                            final docId = data['docId'];
                             final date = data['added_at'].toDate();
                             final delta = data['delta_stock'];
                             return ListTile(
@@ -131,6 +134,12 @@ class InventoryReportPage extends StatelessWidget {
                                 style:
                                     Theme.of(context).textTheme.headlineSmall,
                               ),
+                              onTap: () {
+                                Navigation.intentWithData(
+                                  routeName: HistoryDetailPage.routeName,
+                                  arguments: docId,
+                                );
+                              },
                             );
                           }).toList(),
                         );
