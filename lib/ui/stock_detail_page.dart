@@ -108,7 +108,8 @@ class StockDetailPage extends StatelessWidget {
                                         margin: const EdgeInsets.symmetric(
                                           vertical: 10,
                                         ),
-                                        child: state.imagePreview(),
+                                        child:
+                                            state.imagePreview(data['docId']),
                                       ),
                                       Container(
                                         width: double.infinity,
@@ -377,8 +378,11 @@ class StockDetailPage extends StatelessWidget {
                                       ? Image.asset(
                                           'assets/istock-default.jpg',
                                         )
-                                      : CachedNetworkImage(
-                                          imageUrl: data['imageUrl'],
+                                      : Hero(
+                                          tag: data['docId'],
+                                          child: CachedNetworkImage(
+                                            imageUrl: data['imageUrl'],
+                                          ),
                                         ),
                                   const SizedBox(
                                     height: 10,

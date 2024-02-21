@@ -34,7 +34,7 @@ class InventoryReportPage extends StatelessWidget {
                       },
                       icon: const Icon(Icons.arrow_upward),
                     ),
-                  ],
+            ],
           ),
           body: SafeArea(
             child: SingleChildScrollView(
@@ -71,71 +71,71 @@ class InventoryReportPage extends StatelessWidget {
                       },
                     ),
                     StreamBuilder(
-                    stream: _firestore
-                        .collectionGroup('reports')
-                        .where(
-                          'added_at',
-                          isGreaterThanOrEqualTo: DateTime(
-                            state.year ?? DateTime.now().year,
-                            state.month ?? DateTime.now().month,
-                            state.day ?? DateTime.now().day,
-                          ),
-                        )
-                        .orderBy('added_at', descending: !state.isSortInc)
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return const Center(
-                          child: CircularProgressIndicator(
-                            color: primaryColor,
-                          ),
-                        );
-                      } else if (snapshot.hasError) {
-                        return Center(
-                          child: Text(snapshot.error.toString()),
-                        );
-                      } else if (snapshot.data == null ||
-                          snapshot.data!.size == 0) {
-                        return const Padding(
-                          padding: EdgeInsets.all(20),
-                          child: Text(
-                            'Tidak Ada Data Laporan',
-                          ),
-                        );
-                      }
-                      return Column(
-                        children: snapshot.data!.docs.map((document) {
-                          final data = document.data();
-                          final name = data['name'];
-                          final date = data['added_at'].toDate();
-                          final delta = data['delta_stock'];
-                          return ListTile(
-                            leading: delta < 0
-                                ? const Icon(
-                                    Icons.remove_circle,
-                                    color: secondaryColor,
-                                    size: 30,
-                                  )
-                                : const Icon(
-                                    Icons.add_box,
-                                    color: primaryColor,
-                                    size: 30,
-                                  ),
-                            title: Text(name),
-                            subtitle: Text(
-                              DateFormat('dd MMMM yyyy HH:mm:ss')
-                                  .format(date),
+                      stream: _firestore
+                          .collectionGroup('reports')
+                          .where(
+                            'added_at',
+                            isGreaterThanOrEqualTo: DateTime(
+                              state.year ?? DateTime.now().year,
+                              state.month ?? DateTime.now().month,
+                              state.day ?? DateTime.now().day,
                             ),
-                            trailing: Text(
-                              delta.toString(),
-                              style:
-                                  Theme.of(context).textTheme.headlineSmall,
+                          )
+                          .orderBy('added_at', descending: !state.isSortInc)
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return const Center(
+                            child: CircularProgressIndicator(
+                              color: primaryColor,
                             ),
                           );
-                        }).toList(),
-                      );
-                    },
-                                ),
+                        } else if (snapshot.hasError) {
+                          return Center(
+                            child: Text(snapshot.error.toString()),
+                          );
+                        } else if (snapshot.data == null ||
+                            snapshot.data!.size == 0) {
+                          return const Padding(
+                            padding: EdgeInsets.all(20),
+                            child: Text(
+                              'Tidak Ada Data Laporan',
+                            ),
+                          );
+                        }
+                        return Column(
+                          children: snapshot.data!.docs.map((document) {
+                            final data = document.data();
+                            final name = data['name'];
+                            final date = data['added_at'].toDate();
+                            final delta = data['delta_stock'];
+                            return ListTile(
+                              leading: delta < 0
+                                  ? const Icon(
+                                      Icons.remove_circle,
+                                      color: secondaryColor,
+                                      size: 30,
+                                    )
+                                  : const Icon(
+                                      Icons.add_box,
+                                      color: primaryColor,
+                                      size: 30,
+                                    ),
+                              title: Text(name),
+                              subtitle: Text(
+                                DateFormat('dd MMMM yyyy HH:mm:ss')
+                                    .format(date),
+                              ),
+                              trailing: Text(
+                                delta.toString(),
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall,
+                              ),
+                            );
+                          }).toList(),
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),

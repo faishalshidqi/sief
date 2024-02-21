@@ -82,8 +82,7 @@ class HomepageProvider extends ChangeNotifier {
             ),
           ];
           notifyListeners();
-        }
-        else if (userData['role'] == 'gudang') {
+        } else if (userData['role'] == 'gudang') {
           itemList = [
             HomepageItem(
               title: 'Supplier',
@@ -101,8 +100,7 @@ class HomepageProvider extends ChangeNotifier {
               routeName: InventoryReportPage.routeName,
             ),
           ];
-        }
-        else if (userData['role'] == 'kasir') {
+        } else if (userData['role'] == 'kasir') {
           itemList = [
             HomepageItem(
               title: 'Penjualan',

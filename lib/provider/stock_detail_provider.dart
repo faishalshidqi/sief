@@ -95,9 +95,7 @@ class StockDetailProvider extends ChangeNotifier {
         'updated_at': timestamp,
       });
 
-      await reportsCollection
-          .doc()
-          .set({
+      await reportsCollection.doc().set({
         'docId': docId,
         'type': 'STOCK-DIPERBARUI',
         'name': name,
@@ -138,12 +136,15 @@ class StockDetailProvider extends ChangeNotifier {
     }
   }
 
-  Widget imagePreview() {
+  Widget imagePreview(String docId) {
     if (imageUrl != '') {
-      return CachedNetworkImage(
-        imageUrl: imageUrl,
-        width: 180,
-        height: 180,
+      return Hero(
+        tag: docId,
+        child: CachedNetworkImage(
+          imageUrl: imageUrl,
+          width: 180,
+          height: 180,
+        ),
       );
     } else if (file != null) {
       return Image.file(

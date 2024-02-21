@@ -12,6 +12,7 @@ import 'package:sief_firebase/provider/homepage_provider.dart';
 import 'package:sief_firebase/provider/login_provider.dart';
 import 'package:sief_firebase/provider/report_provider.dart';
 import 'package:sief_firebase/provider/sales_report_provider.dart';
+import 'package:sief_firebase/provider/search_provider.dart';
 import 'package:sief_firebase/provider/selling_provider.dart';
 import 'package:sief_firebase/provider/stock_detail_provider.dart';
 import 'package:sief_firebase/provider/stocks_provider.dart';
@@ -23,6 +24,7 @@ import 'package:sief_firebase/ui/dashboard_page.dart';
 import 'package:sief_firebase/ui/inventory_report_page.dart';
 import 'package:sief_firebase/ui/login_page.dart';
 import 'package:sief_firebase/ui/sales_report_page.dart';
+import 'package:sief_firebase/ui/search_page.dart';
 import 'package:sief_firebase/ui/selling_page.dart';
 import 'package:sief_firebase/ui/stock_detail_page.dart';
 import 'package:sief_firebase/ui/stock_form_page.dart';
@@ -57,6 +59,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ReportProvider()),
         ChangeNotifierProvider(create: (_) => SellingProvider()),
         ChangeNotifierProvider(create: (_) => SalesReportProvider()),
+        ChangeNotifierProvider(create: (_) => SearchProvider()),
       ],
       child: MaterialApp(
         title: 'Sistem Inventaris Erwin Furniture',
@@ -101,7 +104,9 @@ class MyApp extends StatelessWidget {
                 supplier:
                     ModalRoute.of(context)?.settings.arguments as Supplier,
               ),
-          StocksListPage.routeName: (context) => const StocksListPage(),
+          StocksListPage.routeName: (context) => StocksListPage(
+                query: ModalRoute.of(context)?.settings.arguments as String?,
+              ),
           StockFormPage.routeName: (context) => const StockFormPage(),
           StockDetailPage.routeName: (context) => StockDetailPage(
                 stock: ModalRoute.of(context)?.settings.arguments as Stock,
@@ -110,9 +115,14 @@ class MyApp extends StatelessWidget {
           UserFormPage.routeName: (context) => const UserFormPage(),
           InventoryReportPage.routeName: (context) =>
               const InventoryReportPage(),
-          SellingPage.routeName: (context) => const SellingPage(),
+          SellingPage.routeName: (context) => SellingPage(
+                query: ModalRoute.of(context)?.settings.arguments as String?,
+              ),
           CartPage.routeName: (context) => const CartPage(),
           SalesReportPage.routeName: (context) => const SalesReportPage(),
+          SearchPage.routeName: (context) => SearchPage(
+              sourceRouteName:
+                  ModalRoute.of(context)?.settings.arguments as String),
         },
       ),
     );

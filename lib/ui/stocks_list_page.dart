@@ -11,6 +11,7 @@ import 'package:sief_firebase/components/custom_coming_soon_dialog.dart';
 import 'package:sief_firebase/components/custom_floating_action_button.dart';
 import 'package:sief_firebase/data/model/stock.dart';
 import 'package:sief_firebase/provider/stocks_provider.dart';
+import 'package:sief_firebase/ui/search_page.dart';
 import 'package:sief_firebase/ui/stock_detail_page.dart';
 import 'package:sief_firebase/ui/stock_form_page.dart';
 
@@ -18,7 +19,8 @@ class StocksListPage extends StatelessWidget {
   static const routeName = '/stocks';
   static final _firestore = FirebaseFirestore.instance;
   static final _storage = FirebaseStorage.instance;
-  const StocksListPage({super.key});
+  final String? query;
+  const StocksListPage({super.key, this.query});
 
   @override
   Widget build(BuildContext context) {
@@ -27,23 +29,28 @@ class StocksListPage extends StatelessWidget {
         return Scaffold(
           appBar: customAppBar(
             title: 'Daftar Stok',
-            actions: state.isGridView
-                ? [
-                    IconButton(
+            actions: [
+              state.isGridView
+                  ? IconButton(
                       onPressed: () {
                         state.updateIsGridView(false);
                       },
                       icon: const Icon(Icons.list),
-                    ),
-                  ]
-                : [
-                    IconButton(
+                    )
+                  : IconButton(
                       onPressed: () {
                         state.updateIsGridView(true);
                       },
                       icon: const Icon(Icons.grid_view_rounded),
                     ),
-                  ],
+              IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, SearchPage.routeName,
+                      arguments: routeName);
+                },
+                icon: const Icon(Icons.search),
+              ),
+            ],
           ),
           floatingActionButton: customFloatingActionButton(
             context: context,
@@ -53,7 +60,12 @@ class StocksListPage extends StatelessWidget {
           ),
           body: SafeArea(
             child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-              stream: _firestore.collection('stocks').snapshots(),
+              stream: query == null
+                  ? _firestore.collection('stocks').snapshots()
+                  : _firestore
+                      .collection('stocks')
+                      .where('name', isEqualTo: query)
+                      .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(

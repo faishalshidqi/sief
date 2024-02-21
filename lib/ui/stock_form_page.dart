@@ -248,9 +248,7 @@ class StockFormPage extends StatelessWidget {
                                       );
                                     });
 
-                                    await reportsCollection
-                                        .doc()
-                                        .set({
+                                    await reportsCollection.doc().set({
                                       'docId': id,
                                       'type': 'STOCK MASUK',
                                       'name': state.name,

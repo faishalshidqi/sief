@@ -7,10 +7,15 @@ class SellingProvider extends ChangeNotifier {
   SellingProvider();
 
   List<Sale> cartContent = [];
+  String searchQuery = '';
   int? outingAmount;
-  bool present = false;
   Map? cnt;
   Sale? sale;
+
+  void updateSearchQuery(String value) {
+    searchQuery = value;
+    notifyListeners();
+  }
 
   void addAmount(Sale value) {
     value.outingAmount++;
@@ -75,7 +80,6 @@ class SellingProvider extends ChangeNotifier {
       CollectionReference stocksCollection = _firestore.collection('stocks');
       CollectionReference reportsCollection = _firestore.collection('reports');
 
-
       Timestamp timestamp = Timestamp.fromDate(DateTime.now());
 
       for (final content in cartContent) {
@@ -105,11 +109,9 @@ class SellingProvider extends ChangeNotifier {
           'added_at': timestamp,
         });
       }
-    }
-    catch (error) {
+    } catch (error) {
       rethrow;
-    }
-    finally {
+    } finally {
       clearCart();
     }
   }

@@ -19,7 +19,7 @@ class SalesReportPage extends StatelessWidget {
       builder: (context, state, _) {
         return Scaffold(
           appBar: customAppBar(
-            title: 'Laporan Inventaris',
+            title: 'Laporan Penjualan',
             actions: [
               state.isSortInc
                   ? IconButton(
@@ -82,9 +82,9 @@ class SalesReportPage extends StatelessWidget {
                             ),
                           )
                           .orderBy(
-                          'added_at',
-                          descending: !state.isSortInc,
-                      )
+                            'added_at',
+                            descending: !state.isSortInc,
+                          )
                           .snapshots(),
                       builder: (context, snapshot) {
                         if (!snapshot.hasData) {

@@ -123,8 +123,7 @@ class SupplierFormPage extends StatelessWidget {
                                       title: 'Error!',
                                       content: error.toString(),
                                     );
-                                  }
-                                  finally {
+                                  } finally {
                                     _formKey.currentState!.reset();
                                   }
                                 }

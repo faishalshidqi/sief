@@ -10,18 +10,31 @@ import 'package:sief_firebase/data/model/sale.dart';
 import 'package:sief_firebase/data/model/stock.dart';
 import 'package:sief_firebase/provider/selling_provider.dart';
 import 'package:sief_firebase/ui/cart_page.dart';
+import 'package:sief_firebase/ui/search_page.dart';
 
 class SellingPage extends StatelessWidget {
   static const routeName = '/selling';
   static final _firestore = FirebaseFirestore.instance;
-  const SellingPage({super.key});
+  final String? query;
+  const SellingPage({super.key, this.query});
 
   @override
   Widget build(BuildContext context) {
     return Consumer<SellingProvider>(
       builder: (context, state, _) {
         return Scaffold(
-          appBar: customAppBar(title: 'Penjualan'),
+          appBar: customAppBar(
+            title: 'Penjualan',
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  Navigator.pushNamed(context, SearchPage.routeName,
+                      arguments: routeName);
+                },
+                icon: const Icon(Icons.search),
+              ),
+            ],
+          ),
           floatingActionButton: customFloatingActionButton(
             context: context,
             text: 'Keranjang',
@@ -30,7 +43,12 @@ class SellingPage extends StatelessWidget {
           ),
           body: SafeArea(
             child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-              stream: _firestore.collection('stocks').snapshots(),
+              stream: query == null
+                  ? _firestore.collection('stocks').snapshots()
+                  : _firestore
+                      .collection('stocks')
+                      .where('name', isEqualTo: query)
+                      .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(
@@ -84,7 +102,6 @@ class SellingPage extends StatelessWidget {
                         'Stok:\t $amount',
                       ),
                       onTap: () {
-
                         state.updateSale(
                           Sale(
                             name: name,
